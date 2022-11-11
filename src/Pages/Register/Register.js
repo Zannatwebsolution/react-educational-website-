@@ -1,12 +1,13 @@
 import React, {useContext, useState} from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import useTitle from '../../hooks/useTitle';
 import './Register.css'
 const Register = () => {
   useTitle("Register");
-    const {createUser, updateUser} = useContext(AuthContext);
-
+    const {createUser, updateUser, setLoading} = useContext(AuthContext);
+    const navigate = useNavigate();
     const [user, setUser] = useState({
 		name:"",
 		email:"",
@@ -31,7 +32,8 @@ const Register = () => {
 	}
 	
 	const handleEmail = ()=>{
-		const emailValidation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(user.email);
+		const emailValidation = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(user.email);
+		// const emailValidation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(user.email);
 		if(!emailValidation){
       setError({...error, email:"Please Enter Correct Email", disabled:true});
 		}else{
@@ -70,8 +72,8 @@ const Register = () => {
 		
 	}
 const handleSubmit = (e)=>{
-    e.preventDefault()
-    console.log(user.name, user.email, user.password, user.number)
+    e.preventDefault();
+
     const name = user.name;
     const email = user.email;
     const number = user.number;
@@ -80,7 +82,11 @@ const handleSubmit = (e)=>{
     createUser(email, password)
     .then(res=>{
       updateUser(name, number)
-      .then(res=>toast.success("Registration Successful!"))
+      .then(res=>{
+        setLoading(false)
+        toast.success("Registration Successful!")
+        return navigate("../")
+      })
       .catch(error=>toast.error("Registration Fail"))
     })
     .catch(error=>toast.error("This email already in use"))
@@ -106,7 +112,7 @@ const handleSubmit = (e)=>{
                 <input
                   type="email"
                   className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  id="exampleInput8"
+                  id="exampleInput9"
                   placeholder="Email"
                   onChange={(e)=>setUser({...user, email: e.target.value})} 
                   onBlur={handleEmail} />
@@ -116,7 +122,7 @@ const handleSubmit = (e)=>{
                 <input
                   type="number"
                   className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  id="exampleInput8"
+                  id="exampleInput10"
                   placeholder="Phone Number"
                   onChange={(e)=>setUser({...user, number: e.target.value})} 
                   onBlur={handleNumber}
@@ -127,7 +133,7 @@ const handleSubmit = (e)=>{
                 <input
                   type="password"
                   className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  id="exampleInput8"
+                  id="exampleInput12"
                   placeholder="Password" 
                   onChange={(e)=>setUser({...user, password: e.target.value})} 
                   onBlur={handlePassword} />

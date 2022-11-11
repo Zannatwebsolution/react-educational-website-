@@ -1,23 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PhotoView } from 'react-photo-view';
 import './Service.css';
-import { AuthContext } from '../../../App';
-import loader from '../../../assets/loader/loader.gif'
+
 const Service = () => {
     const [services, setServices] = useState([]);
-    const {loading} = useContext(AuthContext);
-    if(loading){
-        return  <div className='flex justify-center items-center p-12'><img src={loader} alt="Loader..." /></div> 
-    }
-    fetch("https://assignment-10-server-iota.vercel.app/services")
-    .then(res=>res.json())
-    .then(data=>{
-        setServices(data.data.reverse())
-    })
-    .catch(error=>{
-        console.log(error)
-    })
+    useEffect(()=>{
+        fetch("https://assignment-10-server-iota.vercel.app/services")
+        .then(res=>res.json())
+        .then(data=>{
+            return setServices(data.data.reverse())
+        })
+        .catch(error=>{
+            console.log(error)
+        })     
+    },[])
     return (
         <>
         

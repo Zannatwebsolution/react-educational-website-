@@ -11,7 +11,7 @@ const Review = () => {
         fetch("https://assignment-10-server-iota.vercel.app/review")
         .then(res=>res.json())
         .then(data=>setClientReview(data.data))
-    },[clientReview])
+    },[])
 
     return (
         <div className="review-section text-center p-4 sm:p-6 md:p-6 lg:p-8">

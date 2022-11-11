@@ -4,7 +4,8 @@ import Twitter from '../../assets/social/twitter.png';
 import Linkedin from '../../assets/social/linkedin.png';
 import Instagram from '../../assets/social/instagram.png';
 import { Link } from 'react-router-dom';
-import {AuthContext} from '../../App'
+import {AuthContext} from '../../App';
+import defaultImg from '../../assets/default/man.png'
 import useTitle from '../../hooks/useTitle';
 const MyReview = () => {
     useTitle("My Review")
@@ -25,7 +26,11 @@ const MyReview = () => {
                             <div className="review-card p-5" key={review._id}>
                                 <div className="card-body p-0 justify-center items-center">
                                     <div className="profile-review-img">
-                                        <img src={review.img} alt="" />
+                                        {
+                                            review?.img ? <img src={review.img} alt="" /> : 
+                                            <img src={defaultImg} alt="" />
+                                        }
+                                        
                                     </div>
                                     <div className="profile-info">
                                         <h2>{review.name}</h2>

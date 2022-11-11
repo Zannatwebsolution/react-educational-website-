@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
@@ -28,9 +28,7 @@ const handleSubmit = (e)=>{
       toast.success("Login Successful!")
       return navigate(from, { replace: true });
     })
-    .catch(error=>toast.error("Login Fail Wrong Email And Password!"))
-
-   
+    .catch(error=>toast.error("Login Fail Wrong Email And Password!"));
 
 }
 

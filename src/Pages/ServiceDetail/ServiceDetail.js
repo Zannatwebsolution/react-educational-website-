@@ -4,6 +4,7 @@ import { Link, useLoaderData } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import './ServiceDetail.css';
 import loader from '../../assets/loader/loader.gif'
+import defaultImg from '../../assets/default/man.png'
 import useTitle from '../../hooks/useTitle';
 const ServiceDetail = ({name}) => {
     useTitle()
@@ -18,13 +19,13 @@ const ServiceDetail = ({name}) => {
     }
     fetch(`https://assignment-10-server-iota.vercel.app/reviews/${service_name}`)
     .then(res=>res.json())
-    .then(data=>setReviews(data.data))
+    .then(data=>setReviews(data.data.reverse()))
 
     const formHandler = (e)=>{
         e.preventDefault();
         const form = e.target;
         const review = form.review.value;
-        console.log(review, user)
+
         const reviewData = {
             review_service_name: service_name,
             review_content: review,
@@ -32,7 +33,7 @@ const ServiceDetail = ({name}) => {
             email: user.email,
             img: user.photoURL,
         }
-        console.log(reviewData)
+        
         fetch("https://assignment-10-server-iota.vercel.app/review", {
             method: "POST",
             headers: {
@@ -121,7 +122,9 @@ const ServiceDetail = ({name}) => {
                     return(
                         <div key={review._id} className="review-content">
                             <div className="review-header px-14 py-5 flex gap-3 items-center">
-                                <img src={review.img} className="mt-3" alt="" />
+                              {review.img ? <img src={review.img} className="mt-3" alt="" /> :
+                              <img src={defaultImg} className="mt-3" alt="" />
+                              }  
                                <div className="review-header-text">
                                     <h2 className="font-bold text-lg">{review.name}</h2>
                                     <p className="font-bold text-sm"> Service Name: {review.review_service_name}</p>

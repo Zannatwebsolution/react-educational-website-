@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../App';
+import loader from '../../assets/loader/loader.gif'
 import './Services.css';
 const Services = () => {
     const [services, setServices] = useState([]);
-    fetch("https://assignment-10-server-iota.vercel.app/services")
-    .then(res=>res.json())
-    .then(data=>setServices(data.data))
+
+    useEffect(()=>{
+        fetch("https://assignment-10-server-iota.vercel.app/services")
+        .then(res=>res.json())
+        .then(data=>{ setServices(data.data)})
+    },[])
+    
     return (
         <>
          <div className="grid grid-cols-1 grid-flow-row gap-4 md:grid-cols-2 md:grid-flow-row lg:grid-cols-3 sm:grid-cols-2 sm:grid-flow-row" >
